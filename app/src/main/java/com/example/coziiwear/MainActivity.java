@@ -16,6 +16,7 @@ import com.mapbox.android.core.location.LocationEngineRequest;
 import com.mapbox.android.core.location.LocationEngineResult;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.LocationComponentOptions;
@@ -44,11 +45,18 @@ public class MainActivity extends WearableActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Mapbox.getInstance(this, getString(R.string.access_token));
+
         setContentView(R.layout.activity_main);
 
+        // Mapbox access token is configured here. This needs to be called either in your application
+// object or in the same activity which contains the mapview.
 
-        // Enables Always-on
-        setAmbientEnabled();
+// This contains the MapView in XML and needs to be called after the access token is configured.
+
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
     }
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
